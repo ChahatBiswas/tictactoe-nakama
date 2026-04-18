@@ -1,0 +1,5 @@
+node_modules/
+server/build/
+client/build/
+.env
+*.tgz

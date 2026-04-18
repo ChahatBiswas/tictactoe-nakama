@@ -1,0 +1,7 @@
+node_modules
+client
+server/node_modules
+server/build
+*.tgz
+.git
+.env
