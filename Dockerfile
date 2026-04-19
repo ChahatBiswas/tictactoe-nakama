@@ -13,4 +13,4 @@ COPY --from=builder /app/build/index.js /nakama/data/modules/index.js
 EXPOSE 7349 7350 7351
 
 ENTRYPOINT ["/bin/sh", "-c"]
-CMD ["/nakama/nakama migrate up --database.address \"$DATABASE_URL\" && exec /nakama/nakama --name nakama1 --database.address \"$DATABASE_URL\" --logger.level INFO --session.token_expiry_sec 7200 --runtime.path /nakama/data/modules --runtime.js_entrypoint index.js"]
+CMD ["/nakama/nakama migrate up --database.address \"$DATABASE_URL\" && exec /nakama/nakama --name nakama1 --database.address \"$DATABASE_URL\" --socket.server_key defaultkey --logger.level INFO --session.token_expiry_sec 7200 --runtime.path /nakama/data/modules --runtime.js_entrypoint index.js"]
