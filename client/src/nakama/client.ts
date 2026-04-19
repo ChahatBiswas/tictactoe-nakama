@@ -17,10 +17,24 @@ export async function authenticateDevice(deviceId: string, displayName?: string)
       _session = await nakamaClient.authenticateDevice(deviceId, true, displayName);
       return _session;
     } catch (_e) {
-      // 409 = username already taken by another account — fall back to no username
+      // 409 = username already taken by another account — fall back, then try to update
     }
   }
   _session = await nakamaClient.authenticateDevice(deviceId, true);
+
+  // Try to claim the desired username after fallback auth
+  if (displayName && _session) {
+    for (let suffix = 0; suffix <= 9; suffix++) {
+      const candidate = suffix === 0 ? displayName : `${displayName}${suffix}`;
+      try {
+        await nakamaClient.updateAccount(_session, { username: candidate });
+        break; // claimed it — stop trying
+      } catch (_e) {
+        // that username is also taken, try next suffix
+      }
+    }
+  }
+
   return _session!;
 }
 
